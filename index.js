@@ -1,11 +1,22 @@
 const express = require('express');
 
 const app = express();
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('🚀 Pay1 server is LIVE');
 });
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+// simple test endpoint
+app.post('/echo', (req, res) => {
+  res.json({
+    message: "Server received your data",
+    data: req.body
+  });
 });
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  
