@@ -19,3 +19,11 @@ app.get('/pay1', (req, res) => {
     timestamp: Date.now()
   });
 });
+
+app.get('/pay1', (req, res) => {
+  res.json({
+    status: "active",
+    message: "Pay1 system endpoint working",
+    timestamp: Date.now()
+  });
+});
