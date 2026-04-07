@@ -10,3 +10,12 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+app.get('/pay1', (req, res) => {
+  res.json({
+    status: "active",
+    message: "Pay1 system endpoint working",
+    timestamp: Date.now()
+  });
+});
