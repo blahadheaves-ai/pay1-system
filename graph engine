@@ -1,0 +1,31 @@
+import { Graph, NodeId, DistributionResult } from './types';
+
+export class PayoutGraphEngine {
+  private graph: Graph;
+
+  constructor(graph: Graph) {
+    this.graph = graph;
+  }
+
+  distribute(origin: NodeId, amount: number): DistributionResult {
+    const result: DistributionResult = {};
+
+    const visit = (node: NodeId, value: number) => {
+      const outgoing = this.graph.edges.filter(e => e.from === node);
+
+      // If no children → keep value
+      if (outgoing.length === 0) {
+        result[node] = (result[node] || 0) + value;
+        return;
+      }
+
+      for (const edge of outgoing) {
+        const share = value * edge.weight;
+        visit(edge.to, share);
+      }
+    };
+
+    visit(origin, amount);
+    return result;
+  }
+}
