@@ -23,3 +23,5 @@ services:
     environment:
       - STRIPE_SECRET_KEY=sk_test_xxx
       - BASE_URL=http://localhost:3000
+
+docker-compose up --build
