@@ -1,0 +1,16 @@
+export type NodeId = string;
+
+export interface Edge {
+  from: NodeId;
+  to: NodeId;
+  weight: number; // percentage (0–1)
+}
+
+export interface Graph {
+  nodes: NodeId[];
+  edges: Edge[];
+}
+
+export interface DistributionResult {
+  [accountId: string]: number;
+}
