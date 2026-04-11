@@ -1,0 +1,23 @@
+CREATE TABLE nodes (
+  id TEXT PRIMARY KEY
+);
+
+CREATE TABLE edges (
+  id TEXT PRIMARY KEY,
+  from_node TEXT,
+  to_node TEXT,
+  weight REAL
+);
+
+CREATE TABLE payouts (
+  id TEXT PRIMARY KEY,
+  origin TEXT,
+  amount INTEGER,
+  created_at INTEGER
+);
+
+CREATE TABLE payout_results (
+  payout_id TEXT,
+  account_id TEXT,
+  amount INTEGER
+);
