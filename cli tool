@@ -33,3 +33,18 @@ program
   });
 
 program.parse();
+
+program
+  .command('distribute')
+  .argument('<amount>')
+  .action(async (amount) => {
+    const graph = require('./graph.json');
+
+    const res = await axios.post('http://localhost:3000/distribute', {
+      graph,
+      origin: 'A',
+      amount: Number(amount),
+    });
+
+    console.log(res.data);
+  });
