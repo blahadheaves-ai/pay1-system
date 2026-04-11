@@ -1,0 +1,52 @@
+npm install stripe express body-parser dotenv
+import Stripe from 'stripe';
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-06-20',
+});
+
+export async function createCheckoutSession(amount: number, currency = 'usd') {
+  return await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency,
+          product_data: {
+            name: 'Pay1 Contribution',
+          },
+          unit_amount: amount,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${process.env.BASE_URL}/success`,
+    cancel_url: `${process.env.BASE_URL}/cancel`,
+  });
+}
+import express from 'express';
+import bodyParser from 'body-parser';
+import { createCheckoutSession } from './payments';
+
+const app = express();
+app.use(bodyParser.json());
+
+app.post('/pay', async (req, res) => {
+  const { amount } = req.body;
+
+  try {
+    const session = await createCheckoutSession(amount);
+    res.json({ url: session.url });
+  } catch (err) {
+    res.status(500).json({ error: 'Payment failed' });
+  }
+});
+
+app.get('/health', (_, res) => {
+  res.send('OK');
+});
+
+app.listen(3000, () => {
+  console.log('API running on port 3000');
+});

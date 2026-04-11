@@ -1,0 +1,50 @@
+npm install commander axios
+
+
+#!/usr/bin/env node
+
+import { Command } from 'commander';
+import axios from 'axios';
+
+const program = new Command();
+
+program
+  .name('pay1')
+  .description('Pay1 CLI');
+
+program
+  .command('pay')
+  .description('Create payment session')
+  .argument('<amount>', 'Amount in cents')
+  .action(async (amount) => {
+    const res = await axios.post('http://localhost:3000/pay', {
+      amount: Number(amount),
+    });
+
+    console.log('Open this URL to pay:');
+    console.log(res.data.url);
+  });
+
+program
+  .command('health')
+  .action(async () => {
+    const res = await axios.get('http://localhost:3000/health');
+    console.log(res.data);
+  });
+
+program.parse();
+
+program
+  .command('distribute')
+  .argument('<amount>')
+  .action(async (amount) => {
+    const graph = require('./graph.json');
+
+    const res = await axios.post('http://localhost:3000/distribute', {
+      graph,
+      origin: 'A',
+      amount: Number(amount),
+    });
+
+    console.log(res.data);
+  });
