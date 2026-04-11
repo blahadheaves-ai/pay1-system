@@ -25,3 +25,28 @@ export async function createCheckoutSession(amount: number, currency = 'usd') {
     cancel_url: `${process.env.BASE_URL}/cancel`,
   });
 }
+import express from 'express';
+import bodyParser from 'body-parser';
+import { createCheckoutSession } from './payments';
+
+const app = express();
+app.use(bodyParser.json());
+
+app.post('/pay', async (req, res) => {
+  const { amount } = req.body;
+
+  try {
+    const session = await createCheckoutSession(amount);
+    res.json({ url: session.url });
+  } catch (err) {
+    res.status(500).json({ error: 'Payment failed' });
+  }
+});
+
+app.get('/health', (_, res) => {
+  res.send('OK');
+});
+
+app.listen(3000, () => {
+  console.log('API running on port 3000');
+});
