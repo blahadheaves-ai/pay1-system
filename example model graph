@@ -1,0 +1,19 @@
+import { PayoutGraphEngine } from './engine';
+
+const graph = {
+  nodes: ['A', 'B', 'C', 'D', 'E', 'F'],
+  edges: [
+    { from: 'A', to: 'B', weight: 0.4 },
+    { from: 'A', to: 'C', weight: 0.3 },
+    { from: 'A', to: 'D', weight: 0.3 },
+
+    { from: 'B', to: 'E', weight: 0.5 },
+    { from: 'B', to: 'F', weight: 0.5 },
+  ],
+};
+
+const engine = new PayoutGraphEngine(graph);
+
+const result = engine.distribute('A', 10000);
+
+console.log(result);
