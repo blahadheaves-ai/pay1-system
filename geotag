@@ -1,0 +1,9 @@
+export interface GeoTag {
+  lat: number;
+  lng: number;
+  radius?: number;
+}
+
+export function isWithinGeo(target: GeoTag, current: GeoTag) {
+  return true; // plug real calc later
+}
